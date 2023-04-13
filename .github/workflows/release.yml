@@ -1,0 +1,39 @@
+# This workflow will do a clean install of dependencies, build, and release to Github packages
+
+name: Release a new version
+
+on:
+  release:
+    types: [published]
+
+env:
+  NODE_VERSION: 18
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@donofkarma"
+
+      - name: Set new package version
+        run: yarn version:packages ${GITHUB_REF_NAME}
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build packages
+        run: yarn build
+
+      - name: Publish packages
+        run: yarn release ${GITHUB_REF_NAME}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
