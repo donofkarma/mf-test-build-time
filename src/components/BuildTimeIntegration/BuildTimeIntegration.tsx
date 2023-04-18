@@ -5,7 +5,18 @@ const BuildTimeIntegration: FC = () => {
     console.log('BuildTimeIntegration hooks?');
   });
 
-  return <h2>Build Time Integration</h2>;
+  return (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'skyblue',
+      }}
+    >
+      <h2 style={{ marginTop: 0 }}>Build Time Integration</h2>
+
+      <p>This is an installed package.</p>
+    </div>
+  );
 };
 
 export default BuildTimeIntegration;
